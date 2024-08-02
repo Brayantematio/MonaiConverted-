@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertisseur de monnaies</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .convertisseur {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .convertisseur h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .convertisseur form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .convertisseur input, .convertisseur select {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .convertisseur button {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .convertisseur button:hover {
+            background-color: #3e8e41;
+        }
+
+        .convertisseur p {
+            margin-top: 40px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="convertisseur">
+        <h1>Convertisseur de monnaies</h1>
+        <form id="convertir-form">
+            <input type="number" id="montant" placeholder="Montant" step="0.01">
+            <select id="devise-from">
+                <option value="EUR">Euro (EUR)</option>
+                <option value="USD">Dollar américain (USD)</option>
+                <option value="GBP">Livre sterling (GBP)</option>
+                <option value="JPY">Yen japonais (JPY)</option>
+                <option value="AUD">Dollar australien (AUD)</option>
+                <option value="CAD">Dollar canadien (CAD)</option>
+                <option value="CHF">Franc suisse (CHF)</option>
+                <option value="CNY">Yuan chinois (CNY)</option>
+                <option value="DKK">Couronne danoise (DKK)</option>
+                <option value="HKD">Dollar de Hong Kong (HKD)</option>
+                <option value="INR">Roupie indienne (INR)</option>
+                <option value="MXN">Peso mexicain (MXN)</option>
+                <option value="NOK">Couronne norvégienne (NOK)</option>
+                <option value="NZD">Dollar néo-zélandais (NZD)</option>
+                <option value="PLN">Zloty polonais (PLN)</option>
+                <option value="RUB">Rouble russe (RUB)</option>
+                <option value="SEK">Couronne suédoise (SEK)</option>
+                <option value="SGD">Dollar de Singapour (SGD)</option>
+                <option value="TRY">Livre turque (TRY)</option>
+                <option value="ZAR">Rand sud-africain (ZAR)</option>
+                <option value="EGP">Livre égyptienne (EGP)</option>
+                <option value="NGN">Naira nigériane (NGN)</option>
+                <option value="KES">Shilling kényan (KES)</option>
+                <option value="GHS">Cedi ghanéen (GHS)</option>
+                <option value="CDF">Franc congolais (CDF)</option>
+                <option value="BWP">Pula botswanaise (BWP)</option>
+                <option value="TZS">Shilling tanzanien (TZS)</option>
+                <option value="UGX">Shilling ougandais (UGX)</option>
+                <option value="MZN">Metical mozambicain (MZN)</option>
+                <option value="ZMW">Kwacha zambien (ZMW)</option>
+                <option value="NAD">Dollar namibien (NAD)</option>
+                <option value="SZL">Lilangeni swazilandais (SZL)</option>
+                <option value="LRD">Dollar libérien (LRD)</option>
+                <option value="SCR">Roupie seychelloise (SCR)</option>
+                <option value="GMD">Dalasi gambien (GMD)</option>
+                <option value="SLL">Leone sierra-léonais (SLL)</option>
+                <option value="XOF">Franc CFA (XOF)</option>
+                <option value="XAF">Franc CFA (XAF)</option>
+            </select>
+            <select id="devise-to">
+                <option value="EUR">Euro (EUR)</option>
+                <option value="USD">Dollar américain (USD)</option>
+                <option value="GBP">Livre sterling (GBP)</option>
+                <option value="JPY">Yen japonais (JPY)</option>
+                <option value="AUD">Dollar australien (AUD)</option>
+                <option value="CAD">Dollar canadien (CAD)</option>
+                <option value="CHF">Franc suisse (CHF)</option>
+                <option value="CNY">Yuan chinois (CNY)</option>
+                <option value="DKK">Couronne danoise (DKK)</option>
+                <option value="XOF">Franc CFA (XOF)</option>
+                <option value="XAF">Franc CFA (XAF)</option>
+            </select>
+            <button type="submit">Convertir</button>
+            <p id="resultat"></p>
+        </form>
+    </div>
+    <script>
+        const montantInput = document.getElementById('montant');
+        const deviseFromSelect = document.getElementById('devise-from');
+        const deviseToSelect = document.getElementById('devise-to');
+        const convertirForm = document.getElementById('convertir-form');
+        const resultatParagraph = document.getElementById('resultat');
+
+        const tauxDeChange = {
+            EUR: { USD: 1.12, GBP: 0.88, JPY: 124.45, AUD: 1.61, CAD: 1.47, CHF: 1.08, CNY: 7.82, DKK: 7.47, HKD: 8.76, INR: 82.23, MXN: 23.41, NOK: 10.23, NZD: 1.67, PLN: 4.53, RUB: 74.21, SEK: 10.47, SGD: 1.52, TRY: 7.23, ZAR: 16.45, EGP: 18.23, NGN: 420.23, KES: 123.45, GHS: 6.23, CDF: 2000.45, BWP: 12.34, TZS: 2500.56, UGX: 3700.78, MZN: 65.90, ZMW: 18.23, NAD: 17.45, SZL: 16.67, LRD: 150.23, SCR: 14.56, GMD: 55.67, SLL: 9500.78, XOF: 655.45, XAF: 655.45 },
+            USD: { EUR: 0.89, GBP: 0.78, JPY: 110.23, AUD: 1.44, CAD: 1.31, CHF: 0.96, CNY: 6.95, DKK: 6.63, HKD: 7.76, INR: 73.21, MXN: 20.85, NOK: 9.13, NZD: 1.49, PLN: 4.03, RUB: 66.23, SEK: 9.33, SGD: 1.35, TRY: 6.45, ZAR: 14.67, EGP: 16.23, NGN: 375.23, KES: 110.45, GHS: 5.67, CDF: 1800.45, BWP: 11.23, TZS: 2200.56, UGX: 3300.78, MZN: 59.90, ZMW: 16.23, NAD: 15.45, SZL: 15.67, LRD: 135.23, SCR: 13.56, GMD: 50.67, SLL: 8500.78, XOF: 590.45, XAF: 590.45 },
+            XAF: { EUR: 0.0015, USD: 0.0017, GBP: 0.0013, JPY: 0.18, AUD: 0.0023, CAD: 0.0021, CHF: 0.0016, CNY: 0.012, DKK: 0.011, HKD: 0.013, INR: 0.12, MXN: 0.031, NOK: 0.014, NZD: 0.0025, PLN: 0.006, RUB: 0.11, SEK: 0.015, SGD: 0.0023, TRY: 0.012, ZAR: 0.025, EGP: 0.028, NGN: 5.23, KES: 1.45, GHS: 0.67, CDF: 3.45, BWP: 1.23, TZS: 4.56, UGX: 6.78, MZN: 1.90, ZMW: 0.023, NAD: 0.021, SZL: 0.022, LRD: 2.23, SCR: 0.019, GMD: 0.93, SLL: 17.78, XOF: 1 }
+        };
+
+        convertirForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const montant = parseFloat(montantInput.value);
+            const deviseFrom = deviseFromSelect.value;
+            const deviseTo = deviseToSelect.value;
+            const taux = tauxDeChange[deviseFrom][deviseTo];
+            const resultat = montant * taux;
+            resultatParagraph.textContent = `${montant} ${deviseFrom} = ${resultat.toFixed(2)} ${deviseTo}`;
+        });
+    </script>
+</body>
+</html>
